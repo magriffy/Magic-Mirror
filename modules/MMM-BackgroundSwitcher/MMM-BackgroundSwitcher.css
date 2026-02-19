@@ -1,0 +1,30 @@
+/* Simple styling for the background switcher button */
+.mmm-background-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mmm-background-switcher-button {
+  background: rgba(0,0,0,0.6);
+  color: var(--color-text-bright);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 0 14px;
+  min-width: 44px;
+  height: 44px;
+  border-radius: 999px; /* fully rounded */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.mmm-background-switcher-button:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.mmm-background-switcher-note {
+  color: var(--color-text-dimmed);
+  font-size: 0.9rem;
+}

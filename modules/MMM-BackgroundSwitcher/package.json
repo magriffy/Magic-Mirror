@@ -1,0 +1,6 @@
+{
+  "name": "mmm-backgroundswitcher",
+  "version": "1.0.0",
+  "description": "Simple module to cycle background images from a folder with a button",
+  "main": "MMM-BackgroundSwitcher.js"
+}

@@ -1,0 +1,11 @@
+/* Put a full-viewport background image on the HTML element so it fills
+     the entire screen while keeping the `body` margins/gaps intact. */
+
+/* html {
+    background: url("../modules/MMM-EasyPix/pix/susan-lu4esm-sunset-2473.gif") center center / cover no-repeat fixed;
+} */
+
+/* Keep the body transparent so the background shows through the module gaps. */
+body {
+    background: transparent;
+}
