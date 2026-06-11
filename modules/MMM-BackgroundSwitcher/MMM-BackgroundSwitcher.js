@@ -8,7 +8,7 @@ Module.register("MMM-BackgroundSwitcher", {
     // buttonText: "⟳",
     initialIndex: 0,
     // switch interval in minutes (can be fractional for testing, e.g. 0.1 = 6s)
-    switchInterval: 0.1
+    switchInterval: 7
   },
 
   start() {
