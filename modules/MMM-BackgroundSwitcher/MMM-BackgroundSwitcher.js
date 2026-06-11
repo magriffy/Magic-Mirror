@@ -5,13 +5,16 @@ Module.register("MMM-BackgroundSwitcher", {
     // If null, the module will use its own `pix` folder.
     // You can set this to e.g. "modules/MMM-EasyPix/pix" to use another module's pix folder.
     folder: "../MMM-EasyPix/pix",
-    buttonText: "",
-    initialIndex: 0
+    // buttonText: "⟳",
+    initialIndex: 0,
+    // switch interval in minutes (can be fractional for testing, e.g. 0.1 = 6s)
+    switchInterval: 0.1
   },
 
   start() {
     this.images = [];
     this.index = this.config.initialIndex || 0;
+    this.timer = null;
     this.sendSocketNotification("GET_IMAGES", { folder: this.config.folder });
   },
 
@@ -30,6 +33,8 @@ Module.register("MMM-BackgroundSwitcher", {
         // clamp initial index
         this.index = (this.index % this.images.length + this.images.length) % this.images.length;
         this.applyBackground(this.images[this.index]);
+        // start auto-switch timer
+        this.startTimer();
       }
       this.updateDom();
     }
@@ -60,6 +65,8 @@ Module.register("MMM-BackgroundSwitcher", {
     if (!this.images || this.images.length === 0) return;
     this.index = (this.index + 1) % this.images.length;
     this.applyBackground(this.images[this.index]);
+    // reset timer so next automatic switch happens after full interval
+    this.startTimer();
   },
 
   applyBackground(url) {
@@ -139,5 +146,38 @@ Module.register("MMM-BackgroundSwitcher", {
       try { v.pause(); } catch (e) {}
       v.remove();
     }
+  },
+
+  // Start the automatic switch timer. Interval is in minutes from config.
+  startTimer() {
+    // clear any existing timer first
+    this.stopTimer();
+    // do not start when there are 0 or 1 images
+    if (!this.images || this.images.length <= 1) return;
+    const minutes = Number(this.config.switchInterval) || 7;
+    const ms = minutes * 60 * 1000;
+    this.timer = setTimeout(() => {
+      this.nextImage();
+      // schedule the next one
+      this.startTimer();
+    }, ms);
+  },
+
+  // Stop the automatic switch timer.
+  stopTimer() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  },
+
+  // When module is suspended (hidden), stop the timer; resume when shown.
+  suspend() {
+    this.stopTimer();
+  },
+
+  resume() {
+    // restart timer when resuming if images are available
+    if (this.images && this.images.length > 1) this.startTimer();
   }
 });
